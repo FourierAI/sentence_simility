@@ -12,7 +12,7 @@ class EmbeddingConfig:
 
     def __init__(self):
 
-        embedding_config = load_yaml_config('../../config_file/embedding_config_train.yml')
+        embedding_config = load_yaml_config('../../config_file/embedding_config.yml')
 
         self.dimension = embedding_config['dimension']
         self.pre_train = embedding_config['pre_train']

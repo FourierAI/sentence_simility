@@ -15,6 +15,6 @@ def load_yaml_config(config_file_name):
 
 if __name__ == "__main__":
 
-    embedding_config = load_yaml_config('embedding_config_train.yml')
+    embedding_config = load_yaml_config('embedding_config.yml')
 
     print(embedding_config)

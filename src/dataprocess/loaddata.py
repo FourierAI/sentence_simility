@@ -11,6 +11,7 @@ import pandas as pd
 import numpy as np
 import csv
 import torch
+from nltk.tokenize import word_tokenize
 
 
 def load_data_csv(data_set, type):
@@ -30,15 +31,37 @@ def load_data_csv(data_set, type):
     return data_frame.dropna(how='any')
 
 
-if __name__ == "__main__":
-    train_df = load_data_csv(data_set='sts', type='train')
-
-    train_score = train_df.iloc[:, [4]]
+def load_sents_pair(data_set='sts', type='train'):
+    train_df = load_data_csv(data_set=data_set, type=type)
     train_sents_left = train_df.iloc[:, [5]]
     train_sents_right = train_df.iloc[:, [6]]
+    return train_sents_left, train_sents_right
 
-    print(train_score)
 
-    print(train_sents_left)
+def load_score(data_set='sts', type='train'):
+    train_df = load_data_csv(data_set=data_set, type=type)
+    train_score = train_df.iloc[:, [4]]
+    return train_score
 
-    print(train_sents_right)
+
+def load_all_sents(data_set='sts', type='train'):
+    train_sents_left, train_sents_right = load_sents_pair(data_set=data_set, type=type)
+    test_df = load_data_csv(data_set=data_set, type=type)
+    dev_df = load_data_csv(data_set=data_set, type=type)
+    test_sents_left = test_df.iloc[:, [5]].values.tolist()
+    test_sents_right = test_df.iloc[:, [6]].values.tolist()
+    dev_sents_left = dev_df.iloc[:, [5]].values.tolist()
+    dev_sents_right = dev_df.iloc[:, [6]].values.tolist()
+    all_sents = []
+    all_sents.extend(train_sents_left)
+    all_sents.extend(train_sents_right)
+    all_sents.extend(test_sents_left)
+    all_sents.extend(test_sents_right)
+    all_sents.extend(dev_sents_left)
+    all_sents.extend(dev_sents_right)
+    whole_sents = [word_tokenize(sent[0].lower()) for sent in all_sents]
+    return whole_sents
+
+
+if __name__ == "__main__":
+    load_sents_pair()
